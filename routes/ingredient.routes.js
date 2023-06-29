@@ -10,9 +10,7 @@ router.post('/ingredients', (req, res, next) => {
   const { name } = req.body;
   Ingredient.create({ name })
     .then((response) => {
-      res
-        .status(201)
-        .json({ message: 'ingredient document created: ' + response.name });
+      res.status(201).json(response);
     })
     .catch((err) => {
       console.log('error creating ingredient', err);
@@ -40,22 +38,22 @@ router.get('/ingredients', (req, res, next) => {
 
 // GET /api/ingredients/:ingredientId
 router.get('/ingredients/:ingredientId', (req, res, next) => {
-    const { ingredientId } = req.params;
+  const { ingredientId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(ingredientId)) {
-      res.status(400).json({ message: 'Specified id is not valid' });
-      return;
-    }
+  if (!mongoose.Types.ObjectId.isValid(ingredientId)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
 
-    Ingredient.findById(ingredientId)
-      .then((response) => res.json(response))
-      .catch((err) => {
-        console.log('error getting details of a ingredient', err);
-        res.status(500).json({
-          message: 'error getting details of a ingredient',
-          error: err,
-        });
+  Ingredient.findById(ingredientId)
+    .then((response) => res.json(response))
+    .catch((err) => {
+      console.log('error getting details of a ingredient', err);
+      res.status(500).json({
+        message: 'error getting details of a ingredient',
+        error: err,
       });
+    });
 });
 
 module.exports = router;
