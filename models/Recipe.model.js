@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 const recipeSchema = new Schema({
     name: {
         type: String,
-        required: [true, "Please provide a valid title"],
+        required: [true, "Please provide a valid name"],
         unique: true
         },
     instructions: String,
