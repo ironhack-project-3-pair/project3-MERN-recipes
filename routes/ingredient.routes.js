@@ -27,7 +27,7 @@ router.post('/ingredients', (req, res, next) => {
 router.get('/ingredients', (req, res, next) => {
   Ingredient.find()
     .then((response) => {
-      res.json(response);
+      res.status(200).json(response);
     })
     .catch((err) => {
       console.log('error getting list of ingredients', err);
@@ -48,7 +48,7 @@ router.get('/ingredients/:ingredientId', (req, res, next) => {
     }
 
     Ingredient.findById(ingredientId)
-      .then((response) => res.json(response))
+      .then((response) => res.status(200).json(response))
       .catch((err) => {
         console.log('error getting details of a ingredient', err);
         res.status(500).json({
