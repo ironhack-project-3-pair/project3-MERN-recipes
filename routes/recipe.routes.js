@@ -55,7 +55,7 @@ router.get('/recipes/:recipeId', (req, res, next) => {
         return;
     }
 
-    Recipe.findOneById(req.params.recipeId)
+    Recipe.findById(req.params.recipeId)
         .then(response => res.status(200).json(response))
         .catch((err) => {
             console.log('error getting recipe', err);
@@ -81,8 +81,10 @@ router.put('/recipes/:recipeId', (req, res, next) => {
         recipeIngredients: req.body.recipeIngredients,
     }
 
-    Recipe.findOneByIdAndUpdate(req.params.recipeId, newRecipe, { new: true })
-        .then(response => res.status(200).json(response))
+    Recipe.findByIdAndUpdate(req.params.recipeId, newRecipe, { new: true })
+        .then(response => {
+            res.status(200).json(response)
+        })
         .catch((err) => {
             console.log('error updating recipe', err);
             res.status(500).json({
@@ -100,7 +102,7 @@ router.delete('/recipes/:recipeId', (req, res, next) => {
         return;
     }
 
-    Recipe.findOneByIdAndDelete(req.params.recipeId)
+    Recipe.findByIdAndDelete(req.params.recipeId)
         .then(response => res.status(200).json(response))
         .catch((err) => {
             console.log('error deleting recipe', err);
