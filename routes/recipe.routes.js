@@ -1,33 +1,59 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const Recipe = require("../models/Recipe.model");
-const Ingredient = require("../models/Ingredient.model");
+const Recipe = require('../models/Recipe.model');
+const Ingredient = require('../models/Ingredient.model');
 
 // POST /api/recipes
-router.post("/recipes", (req, res, next) => {
-    
+router.post('/recipes', (req, res, next) => {
+  const newRecipe = {
+    name: req.body.name,
+    instructions: req.body.instructions,
+    durationInMin: req.body.durationInMin,
+    recipeIngredients: [],
+  };
+  Recipe.create(newRecipe)
+    .then((response) => {
+      res.status(201).json(response);
+    })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(500).json(err);
+      } else if (err.code === 11000) {
+        res.status(500).json({
+          errorMessage:
+            'Recipe name needs to be unique. Provide a different recipe name.',
+        });
+      } else {
+        next(err);
+      }
+
+    });
 });
 
 // GET /api/recipes
 router.get('/recipes', (req, res, next) => {
-    
+  Recipe.find()
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      console.log('error getting list of Recipes', err);
+      res.status(500).json({
+        message: 'error getting list of Recipes',
+        error: err,
+      });
+    });
 });
 
 // GET /api/recipes/:recipeId
-router.get('/recipes/:recipeId', (req, res, next) => {
-
-});
+router.get('/recipes/:recipeId', (req, res, next) => {});
 
 // PUT /api/recipes/:recipeId
-router.put('/recipes/:recipeId', (req, res, next) => {
-
-});
+router.put('/recipes/:recipeId', (req, res, next) => {});
 
 // DELETE /api/recipes/:recipeId
-router.delete('/recipes/:recipeId', (req, res, next) => {
-
-});
+router.delete('/recipes/:recipeId', (req, res, next) => {});
 
 module.exports = router;
