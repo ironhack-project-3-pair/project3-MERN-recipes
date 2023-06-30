@@ -7,8 +7,8 @@ const Ingredient = require('../models/Ingredient.model');
 
 // POST /api/ingredients
 router.post('/ingredients', (req, res, next) => {
-  const { name } = req.body;
-  Ingredient.create({ name })
+  const { name, emoji } = req.body;
+  Ingredient.create({ name, emoji })
     .then((response) => {
       res.status(201).json(response);
     })
