@@ -10,6 +10,8 @@ module.exports = (app) => {
     console.error("ERROR", req.method, req.path, err);
 
     if (err.name === "UnauthorizedError") {
+      // console.log(err.code) // invalid_token
+      // console.log(err.status) // 401
       res.status(401).json({UnauthorizedError: err.inner});
     }
 
