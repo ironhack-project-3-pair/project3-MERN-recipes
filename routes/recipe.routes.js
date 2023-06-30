@@ -11,7 +11,7 @@ router.post('/recipes', (req, res, next) => {
     name: req.body.name,
     instructions: req.body.instructions,
     durationInMin: req.body.durationInMin,
-    recipeIngredients: [],
+    recipeIngredients: req.body.recipeIngredients,
   };
   Recipe.create(newRecipe)
     .then((response) => {
@@ -28,7 +28,6 @@ router.post('/recipes', (req, res, next) => {
       } else {
         next(err);
       }
-
     });
 });
 
@@ -50,27 +49,25 @@ router.get('/recipes', (req, res, next) => {
 
 // GET /api/recipes/:recipeId
 router.get('/recipes/:recipeId', (req, res, next) => {
-
   if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
   Recipe.findById(req.params.recipeId)
-    .populate("recipeIngredients.ingredient")
-    .then(response => res.status(200).json(response))
+    .populate('recipeIngredients.ingredient')
+    .then((response) => res.status(200).json(response))
     .catch((err) => {
       console.log('error getting recipe', err);
       res.status(500).json({
-      message: 'error getting recipe',
-      error: err,
+        message: 'error getting recipe',
+        error: err,
       });
     });
 });
 
 // PUT /api/recipes/:recipeId
 router.put('/recipes/:recipeId', (req, res, next) => {
-    
   if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
@@ -81,31 +78,31 @@ router.put('/recipes/:recipeId', (req, res, next) => {
     instructions: req.body.instructions,
     durationInMin: req.body.durationInMin,
     recipeIngredients: req.body.recipeIngredients,
-  }
+  };
 
   Recipe.findByIdAndUpdate(req.params.recipeId, newRecipe, { new: true })
-    .then(response => {
-      res.status(200).json(response)
+    .populate('recipeIngredients.ingredient')
+    .then((response) => {
+      res.status(200).json(response);
     })
     .catch((err) => {
       console.log('error updating recipe', err);
       res.status(500).json({
-      message: 'error updating recipe',
-      error: err,
+        message: 'error updating recipe',
+        error: err,
       });
     });
 });
 
 // DELETE /api/recipes/:recipeId
 router.delete('/recipes/:recipeId', (req, res, next) => {
-
   if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
   Recipe.findByIdAndDelete(req.params.recipeId)
-    .then(response => res.status(200).json(response))
+    .then((response) => res.status(200).json(response))
     .catch((err) => {
       console.log('error deleting recipe', err);
       res.status(500).json({
