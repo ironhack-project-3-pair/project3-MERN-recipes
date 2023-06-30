@@ -76,7 +76,7 @@ router.post("/signup", (req, res, next) => {
 
 // POST  /auth/login - Verifies email and password and returns a JWT
 router.post("/login", (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, rememberMe } = req.body;
 
   // Check if email or password are provided as empty string
   if (!email || !password ) {
@@ -103,11 +103,12 @@ router.post("/login", (req, res, next) => {
         // Create an object that will be set as the token payload
         const payload = { _id, email, name };
 
-        console.log("before")
         // Create a JSON Web Token and sign it
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
           algorithm: "HS256",
-          expiresIn: "6h",
+          expiresIn: rememberMe ? "30d" : "6h", // test with 10 or "10s"
+          // https://www.npmjs.com/package/jsonwebtoken
+          // expressed in seconds or a string describing a time span - https://github.com/vercel/ms
         });
 
         // Send the token as the response
