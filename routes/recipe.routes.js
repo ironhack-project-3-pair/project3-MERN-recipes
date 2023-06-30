@@ -35,6 +35,7 @@ router.post('/recipes', (req, res, next) => {
 // GET /api/recipes
 router.get('/recipes', (req, res, next) => {
   Recipe.find()
+    .populate("recipeIngredients.ingredient")
     .then((response) => {
       res.json(response);
     })
@@ -56,6 +57,7 @@ router.get('/recipes/:recipeId', (req, res, next) => {
   }
 
   Recipe.findById(req.params.recipeId)
+    .populate("recipeIngredients.ingredient")
     .then(response => res.status(200).json(response))
     .catch((err) => {
       console.log('error getting recipe', err);
