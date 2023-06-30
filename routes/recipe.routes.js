@@ -34,83 +34,83 @@ router.post('/recipes', (req, res, next) => {
 
 // GET /api/recipes
 router.get('/recipes', (req, res, next) => {
-    Recipe.find()
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            console.log('error getting list of Recipes', err);
-            res.status(500).json({
-                message: 'error getting list of Recipes',
-                error: err,
-        });
-        });
+  Recipe.find()
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      console.log('error getting list of Recipes', err);
+      res.status(500).json({
+        message: 'error getting list of Recipes',
+        error: err,
+      });
+    });
 });
 
 // GET /api/recipes/:recipeId
 router.get('/recipes/:recipeId', (req, res, next) => {
 
-    if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
-        res.status(400).json({ message: 'Specified id is not valid' });
-        return;
-    }
+  if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
 
-    Recipe.findById(req.params.recipeId)
-        .then(response => res.status(200).json(response))
-        .catch((err) => {
-            console.log('error getting recipe', err);
-            res.status(500).json({
-            message: 'error getting recipe',
-            error: err,
-            });
-        });
+  Recipe.findById(req.params.recipeId)
+    .then(response => res.status(200).json(response))
+    .catch((err) => {
+      console.log('error getting recipe', err);
+      res.status(500).json({
+      message: 'error getting recipe',
+      error: err,
+      });
+    });
 });
 
 // PUT /api/recipes/:recipeId
 router.put('/recipes/:recipeId', (req, res, next) => {
     
-    if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
-        res.status(400).json({ message: 'Specified id is not valid' });
-        return;
-    }
+  if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
 
-    const newRecipe = {
-        name: req.body.name,
-        instructions: req.body.instructions,
-        durationInMin: req.body.durationInMin,
-        recipeIngredients: req.body.recipeIngredients,
-    }
+  const newRecipe = {
+    name: req.body.name,
+    instructions: req.body.instructions,
+    durationInMin: req.body.durationInMin,
+    recipeIngredients: req.body.recipeIngredients,
+  }
 
-    Recipe.findByIdAndUpdate(req.params.recipeId, newRecipe, { new: true })
-        .then(response => {
-            res.status(200).json(response)
-        })
-        .catch((err) => {
-            console.log('error updating recipe', err);
-            res.status(500).json({
-            message: 'error updating recipe',
-            error: err,
-            });
-        });
+  Recipe.findByIdAndUpdate(req.params.recipeId, newRecipe, { new: true })
+    .then(response => {
+      res.status(200).json(response)
+    })
+    .catch((err) => {
+      console.log('error updating recipe', err);
+      res.status(500).json({
+      message: 'error updating recipe',
+      error: err,
+      });
+    });
 });
 
 // DELETE /api/recipes/:recipeId
 router.delete('/recipes/:recipeId', (req, res, next) => {
 
-    if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
-        res.status(400).json({ message: 'Specified id is not valid' });
-        return;
-    }
+  if (!mongoose.Types.ObjectId.isValid(req.params.recipeId)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
 
-    Recipe.findByIdAndDelete(req.params.recipeId)
-        .then(response => res.status(200).json(response))
-        .catch((err) => {
-            console.log('error deleting recipe', err);
-            res.status(500).json({
-              message: 'error deleting recipe',
-              error: err,
-            });
-          });
+  Recipe.findByIdAndDelete(req.params.recipeId)
+    .then(response => res.status(200).json(response))
+    .catch((err) => {
+      console.log('error deleting recipe', err);
+      res.status(500).json({
+        message: 'error deleting recipe',
+        error: err,
+      });
+    });
 });
 
 module.exports = router;
