@@ -7,7 +7,7 @@ const User = require('../models/User.model');
 // GET /api/userIngredients
 router.get('/userIngredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
-  if (!userId) userId = req.payload._id // fallback to current user
+  if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(404).json({ message: 'User id is not valid' });
     return;
@@ -16,7 +16,7 @@ router.get('/userIngredients', (req, res, next) => {
   User.findOne({ _id: userId }, { userIngredients: 1 }) // using a projection, returns an object containing only the array and its id)
     .populate("userIngredients.ingredient")
     .then(response => {
-      res.status(201).json(response.userIngredients)
+      res.status(201).json(response.userIngredients);
     })
     .catch(err => {
       console.log("error getting userIngredients", err);
@@ -30,7 +30,7 @@ router.get('/userIngredients', (req, res, next) => {
 // GET /api/userIngredients/id
 router.get('/userIngredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
-  if (!userId) userId = req.payload._id // fallback to current user
+  if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(404).json({ message: 'User id is not valid' });
     return;
@@ -46,7 +46,7 @@ router.get('/userIngredients/:userIngredientId', (req, res, next) => {
     .populate("userIngredients.ingredient")
     .then(response => {
       if (response.userIngredients[0]) {
-        res.status(201).json(response.userIngredients[0])
+        res.status(201).json(response.userIngredients[0]);
       } else {
         res.status(404).json({
           message: "error getting userIngredient: not found",
@@ -65,7 +65,7 @@ router.get('/userIngredients/:userIngredientId', (req, res, next) => {
 // POST /api/userIngredients
 router.post('/userIngredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
-  if (!userId) userId = req.payload._id // fallback to current user
+  if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(404).json({ message: 'User id is not valid' });
     return;
@@ -73,7 +73,7 @@ router.post('/userIngredients', (req, res, next) => {
 
   const newUserIngredient = {
     ingredient: req.body.ingredientId,
-    qtyInGrams: req.body.qtyInGrams,
+    qtyInGrams: req.body.qtyInGrams
   };
 
   // User.findByIdAndUpdate(userId, 
@@ -105,7 +105,7 @@ router.post('/userIngredients', (req, res, next) => {
         //   })
         //   .populate("userIngredients.ingredient")
         //   .then(response => {
-        //     res.status(200).json(response.userIngredients) // OK
+        //     res.status(200).json(response.userIngredients); // OK
         //   })
         res.status(409).json({ // CONFLICT
           message: "conflict creating a new userIngredient: item already exist, to update use PUT verb instead (same endpoint + /userIngredientId)",
@@ -125,7 +125,7 @@ router.post('/userIngredients', (req, res, next) => {
 // PUT /api/userIngredients/id
 router.put('/userIngredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
-  if (!userId) userId = req.payload._id // fallback to current user
+  if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(404).json({ message: 'User id is not valid' });
     return;
@@ -138,7 +138,7 @@ router.put('/userIngredients/:userIngredientId', (req, res, next) => {
 
   const newUserIngredient = {
     ingredient: req.body.ingredientId,
-    qtyInGrams: req.body.qtyInGrams,
+    qtyInGrams: req.body.qtyInGrams
   };
 
   const { userIngredientId } = req.params;
@@ -149,7 +149,7 @@ router.put('/userIngredients/:userIngredientId', (req, res, next) => {
   )
     .populate("userIngredients.ingredient")
     .then(response => {
-        res.status(200).json(response.userIngredients)
+        res.status(200).json(response.userIngredients);
       })
     .catch(err => {
       console.log("error updating userIngredient", err);
@@ -163,7 +163,7 @@ router.put('/userIngredients/:userIngredientId', (req, res, next) => {
 // PUT /api/userIngredients
 router.put('/userIngredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
-  if (!userId) userId = req.payload._id // fallback to current user
+  if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(404).json({ message: 'User id is not valid' });
     return;
@@ -178,7 +178,7 @@ router.put('/userIngredients', (req, res, next) => {
   )
     .populate("userIngredients.ingredient")
     .then(response => {
-        res.status(200).json(response.userIngredients)
+        res.status(200).json(response.userIngredients);
       })
     .catch(err => {
       console.log("error updating userIngredients", err);
@@ -192,7 +192,7 @@ router.put('/userIngredients', (req, res, next) => {
 // DELETE /api/userIngredients/id
 router.delete('/userIngredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
-  if (!userId) userId = req.payload._id // fallback to current user (routes mounted and protected)
+  if (!userId) userId = req.payload._id; // fallback to current user (routes mounted and protected)
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(404).json({ message: 'User id is not valid' });
     return;
@@ -220,13 +220,13 @@ router.delete('/userIngredients/:userIngredientId', (req, res, next) => {
 
     .then(response => {
       // to do: implement 404 (Not Found)
-      res.status(200).json(response.userIngredients)
+      res.status(200).json(response.userIngredients);
     })
     .catch(err => {
       console.log("error deleting userIngredient", err);
       res.status(500).json({
-          message: "error deleting userIngredient",
-          error: err
+        message: "error deleting userIngredient",
+        error: err
       });
     })
 });
@@ -246,8 +246,8 @@ router.delete('/userIngredients', (req, res, next) => {
     .catch(err => {
       console.log("error deleting userIngredients", err);
       res.status(500).json({
-          message: "error deleting userIngredients",
-          error: err
+        message: "error deleting userIngredients",
+        error: err
       });
     })
 });
