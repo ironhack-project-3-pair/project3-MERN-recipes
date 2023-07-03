@@ -6,12 +6,13 @@ const customValidator = (v, slotsPerDay) => {
 }
 
 const weekPlanSchema = new Schema(
-  { user: {
+  {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-    type: {
+    weekPlanRecipes: {
       dayMonday: {
         type: [
           {
@@ -34,6 +35,8 @@ const weekPlanSchema = new Schema(
         //   },
         //   message: 'only 2 recipe slots available per day in Week Plan',
         // },
+
+        // default: []
       },
       dayTuersday: {
         type: [
@@ -51,6 +54,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: []
       },
       dayWednesday: {
         type: [
@@ -68,6 +72,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: []
       },
       dayThursday: {
         type: [
@@ -85,6 +90,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: []
       },
       dayFriday: {
         type: [
@@ -102,6 +108,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: []
       },
       daySaturday: {
         type: [
@@ -119,6 +126,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: []
       },
       daySunday: {
         type: [
@@ -136,6 +144,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: []
       }
     }
   },

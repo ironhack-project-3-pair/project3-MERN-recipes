@@ -26,6 +26,7 @@ app.use("/auth", authRoutes);
 app.use("/api", isAuthenticated, require("./routes/recipe.routes"))
 app.use("/api", isAuthenticated, require("./routes/ingredient.routes"))
 app.use("/api", isAuthenticated, require("./routes/userIngredient.routes"))
+app.use("/api", isAuthenticated, require("./routes/weekPlan.routes"))
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
