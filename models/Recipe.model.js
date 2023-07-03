@@ -9,15 +9,24 @@ const recipeSchema = new Schema({
         },
     instructions: String,
     durationInMin: Number,
-    recipeIngredients: [
-        {
-            ingredient: {
-                type: Schema.Types.ObjectId, 
-                ref: 'Ingredient'
-            }, 
-            qtyInGrams: Number
-        }
-    ]
+    recipeIngredients: {
+        type: [
+            {
+                ingredient: {
+                    type: Schema.Types.ObjectId, 
+                    ref: 'Ingredient',
+                    required: true
+                }, 
+                qtyInGrams: {
+                    type: Number,
+                    required: true
+                }
+            }
+        ]
+    },
+    picture: {
+        type: String
+    }
 });
 
 module.exports = model('Recipe', recipeSchema);
