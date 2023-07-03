@@ -45,7 +45,13 @@ router.get('/userIngredients/:userIngredientId', (req, res, next) => {
   User.findOne({ _id: userId }, { userIngredients: { $elemMatch: { _id: userIngredientId } } }) // using a projection, returns an object containing only the array (with a single element) and its id)
     .populate("userIngredients.ingredient")
     .then(response => {
-      res.status(201).json(response.userIngredients[0])
+      if (response.userIngredients[0]) {
+        res.status(201).json(response.userIngredients[0])
+      } else {
+        res.status(404).json({
+          message: "error getting userIngredient: not found",
+      })
+      }
     })
     .catch(err => {
       console.log("error getting userIngredient", err);
@@ -86,7 +92,7 @@ router.post('/userIngredients', (req, res, next) => {
           { new: true })
           .populate("userIngredients.ingredient")
           .then(response => {
-            res.status(201).json(response) // CREATED
+            res.status(201).json(response.userIngredients) // CREATED
           })
       } else {
         // // increment the qty
@@ -99,7 +105,7 @@ router.post('/userIngredients', (req, res, next) => {
         //   })
         //   .populate("userIngredients.ingredient")
         //   .then(response => {
-        //     res.status(200).json(response) // OK
+        //     res.status(200).json(response.userIngredients) // OK
         //   })
         res.status(409).json({ // CONFLICT
           message: "conflict creating a new userIngredient: item already exist, to update use PUT verb instead (same endpoint + /userIngredientId)",
@@ -143,7 +149,7 @@ router.put('/userIngredients/:userIngredientId', (req, res, next) => {
   )
     .populate("userIngredients.ingredient")
     .then(response => {
-        res.status(200).json(response)
+        res.status(200).json(response.userIngredients)
       })
     .catch(err => {
       console.log("error updating userIngredient", err);
@@ -172,7 +178,7 @@ router.put('/userIngredients', (req, res, next) => {
   )
     .populate("userIngredients.ingredient")
     .then(response => {
-        res.status(200).json(response)
+        res.status(200).json(response.userIngredients)
       })
     .catch(err => {
       console.log("error updating userIngredients", err);
@@ -210,15 +216,19 @@ router.delete('/userIngredients/:userIngredientId', (req, res, next) => {
   //     const userIngredient = response.userIngredients[0];
   //     return User.findByIdAndUpdate(userId, { $pullAll: { userIngredients: [userIngredient] } }, { new: true })
   //       .populate("userIngredients.ingredient")
-  //   })
-  //   .then(response => res.status(200).json(response))
-  //   .catch(err => {
-  //     console.log("error deleting userIngredient", err);
-  //     res.status(500).json({
-  //         message: "error deleting userIngredient",
-  //         error: err
-  //     });
   //   }) // ok but not efficient codewise...
+
+    .then(response => {
+      // to do: implement 404 (Not Found)
+      res.status(200).json(response.userIngredients)
+    })
+    .catch(err => {
+      console.log("error deleting userIngredient", err);
+      res.status(500).json({
+          message: "error deleting userIngredient",
+          error: err
+      });
+    })
 });
 
 // DELETE /api/userIngredients/
@@ -232,7 +242,7 @@ router.delete('/userIngredients', (req, res, next) => {
 
   User.findByIdAndUpdate(userId, { $unset: { userIngredients: "" } }, { new: true }) // completely remove the field
   // User.findByIdAndUpdate(userId, { $set: { userIngredients: [] } }, { new: true }) 
-    .then(response => res.status(200).json(response))
+    .then(response => res.status(200).json(response.userIngredients))
     .catch(err => {
       console.log("error deleting userIngredients", err);
       res.status(500).json({
