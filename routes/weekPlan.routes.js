@@ -13,12 +13,14 @@ router.put('/week-plan', (req, res, next) => {
     return;
   }
 
+  // const weekPlanRecipes = req.body.weekPlanRecipes // just to test schema validators
   const weekPlanRecipes = {
     dayMonday: [
-      req.body.weekPlanRecipes["dayMonday"]?.[0],
-      // req.body.weekPlanRecipes["dayMonday"]?.[1] // passing undefined element will results in null in db
+      // passing undefined element will results in null in db
+      // req.body.weekPlanRecipes["dayMonday"]?.[0],
+      // req.body.weekPlanRecipes["dayMonday"]?.[1]
     ],
-    dayTuersday: [],
+    dayTuesday: [],
     dayWednesday: [],
     dayThursday: [],
     dayFriday: [],
@@ -48,14 +50,35 @@ router.put('/week-plan', (req, res, next) => {
       }
       // weekPlan.user is an ObjectId from MongoDB, userId is a string from the request
       if (weekPlan.user.toString() !== userId) { // this should not happen...
-        res.status(404).json({message: "error updating weekPlan: user not is not the owner of weekPlan"})
+        res.status(404).json({message: "error updating weekPlan: user is not the owner of the weekPlan"})
         return;
       }
-      return WeekPlan.findOneAndUpdate(
+      // return WeekPlan.findOneAndUpdate(
+      //   { user: userId }, 
+      //   { weekPlanRecipes: weekPlanRecipes }, 
+      //   { new: true, runValidators: true })
+      //   .populate("weekPlanRecipes.dayMonday")
+      //   .populate("weekPlanRecipes.dayTuesday")
+      //   .populate("weekPlanRecipes.dayWednesday")
+      //   .populate("weekPlanRecipes.dayThursday")
+      //   .populate("weekPlanRecipes.dayFriday")
+      //   .populate("weekPlanRecipes.daySaturday")
+      //   .populate("weekPlanRecipes.daySunday")
+      const promiseBasedQuery = WeekPlan.findOneAndUpdate(
         { user: userId }, 
         { weekPlanRecipes: weekPlanRecipes }, 
-        { new: true}
-      )
+        { new: true, runValidators: true })
+      const days = [
+        "dayMonday",
+        "dayTuesday",
+        "dayWednesday",
+        "dayThursday",
+        "dayFriday",
+        "daySaturday",
+        "daySunday"
+      ]
+      days.forEach(day => promiseBasedQuery.populate(`weekPlanRecipes.${day}`))
+      return promiseBasedQuery
     })
     .then(response => {
       res.status(200).json(response)
@@ -78,7 +101,19 @@ router.get('/week-plan', (req, res, next) => {
     return;
   }
 
-  WeekPlan.findOne({ user: userId })
+  // note: there is a `strictPopulate` option
+  const promiseBasedQuery = WeekPlan.findOne({ user: userId })
+  const days = [
+    "dayMonday",
+    "dayTuesday",
+    "dayWednesday",
+    "dayThursday",
+    "dayFriday",
+    "daySaturday",
+    "daySunday"
+  ]
+  days.forEach(day => promiseBasedQuery.populate(`weekPlanRecipes.${day}`))
+  promiseBasedQuery
     .then(weekPlan => {
       res.status(201).json(weekPlan)
     })
