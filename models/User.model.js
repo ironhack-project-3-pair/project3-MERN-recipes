@@ -31,7 +31,8 @@ const userSchema = new Schema(
             }, 
             qtyInGrams: {
                 type: Number,
-                required: true
+                required: true,
+                min: 0
             }
         },
       ],
