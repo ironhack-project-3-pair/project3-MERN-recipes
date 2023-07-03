@@ -36,8 +36,9 @@ const userSchema = new Schema(
             }
         },
       ],
-      // default: undefined // results in userIngredients: null
-      // default: [] // results in userIngredients: undefined
+      // default: null, // results in userIngredients: []
+      // default: undefined, // results in userIngredients not a field
+      // default: [], // results in userIngredients: [] // not even necessary if field already declared as Array
       validate: {
         // return false or throwing an error means validation failed
         validator: function(userIngredients) {
