@@ -16,6 +16,6 @@ const ingredientSchema = new Schema({
     // num: {
     //     type: Number // becomes Int32 in MongoDB
     // }
-});
+}, {strict: 'throw'});
 
 module.exports = model('Ingredient', ingredientSchema);

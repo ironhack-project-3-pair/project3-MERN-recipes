@@ -17,8 +17,22 @@ module.exports = (app) => {
 
     // only render if the error ocurred before sending the response
     if (!res.headersSent) {
-      res.status(500).json({
-        message: "Internal server error. Check the server console",
+      // console.log(err)
+      console.log(err.message) // Unexpected token } in JSON at position 49
+      console.log(err.name) // SyntaxError
+      // console.log(err.statusCode) // 400 (Bad Request)
+      // console.log(err.status) // idem
+      // console.log(err.body) // json body data
+      // console.log(err.type) // "entity.parse.failed"
+      // console.log(err.stack)
+      // res.status(500).json(err) // stack, message and name properties are somehow removed from received error in client... 
+      // res.status(500).json({
+      //   message: "Internal server error. Check the server console",
+      // });
+      // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+      res.status(err.statusCode).json({
+        message: err.name + ": " + err.message,
+        error: err,
       });
     }
   });

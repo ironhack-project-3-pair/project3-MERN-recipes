@@ -26,8 +26,9 @@ router.post('/ingredients', (req, res, next) => {
         // console.log(err.keyPattern) // { name: 1 },
         // console.log(err.keyValue) // { name: 'xxx' },
         err.message2 = err.message; // copy the error message in another property because it is somehow removed in the error received in client...
-      }  
-      
+      } else if (err instanceof mongoose.Error.StrictModeError) {
+        err.message2 = err.message;
+      }
       res.status(500).json({
         message: 'error creating ingredient',
         error: err,
