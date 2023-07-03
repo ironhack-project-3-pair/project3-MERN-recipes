@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 const User = require('../models/User.model');
 
-// GET /api/userIngredients
-router.get('/userIngredients', (req, res, next) => {
+// GET /api/user-ingredients
+router.get('/user-ingredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -27,8 +27,8 @@ router.get('/userIngredients', (req, res, next) => {
     })
 });
 
-// GET /api/userIngredients/id
-router.get('/userIngredients/:userIngredientId', (req, res, next) => {
+// GET /api/user-ingredients/id
+router.get('/user-ingredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -62,8 +62,8 @@ router.get('/userIngredients/:userIngredientId', (req, res, next) => {
     })
 });
 
-// POST /api/userIngredients
-router.post('/userIngredients', (req, res, next) => {
+// POST /api/user-ingredients
+router.post('/user-ingredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -122,8 +122,8 @@ router.post('/userIngredients', (req, res, next) => {
     })
 });
 
-// PUT /api/userIngredients/id
-router.put('/userIngredients/:userIngredientId', (req, res, next) => {
+// PUT /api/useruingredients/id
+router.put('/user-ingredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -160,8 +160,8 @@ router.put('/userIngredients/:userIngredientId', (req, res, next) => {
     })
 });
 
-// PUT /api/userIngredients
-router.put('/userIngredients', (req, res, next) => {
+// PUT /api/user-ingredients
+router.put('/user-ingredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -189,8 +189,8 @@ router.put('/userIngredients', (req, res, next) => {
     })
 });
 
-// DELETE /api/userIngredients/id
-router.delete('/userIngredients/:userIngredientId', (req, res, next) => {
+// DELETE /api/user-ingredients/id
+router.delete('/user-ingredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user (routes mounted and protected)
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -218,6 +218,8 @@ router.delete('/userIngredients/:userIngredientId', (req, res, next) => {
   //       .populate("userIngredients.ingredient")
   //   }) // ok but not efficient codewise...
 
+    .populate("userIngredients.ingredient")
+
     .then(response => {
       // to do: implement 404 (Not Found)
       res.status(200).json(response.userIngredients);
@@ -231,8 +233,8 @@ router.delete('/userIngredients/:userIngredientId', (req, res, next) => {
     })
 });
 
-// DELETE /api/userIngredients/
-router.delete('/userIngredients', (req, res, next) => {
+// DELETE /api/user-ingredients/
+router.delete('/user-ingredients', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id // fallback to current user (routes mounted and protected)
   if (!mongoose.Types.ObjectId.isValid(userId)) {
