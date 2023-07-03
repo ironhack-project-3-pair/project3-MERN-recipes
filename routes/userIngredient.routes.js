@@ -14,6 +14,7 @@ router.get('/user-ingredients', (req, res, next) => {
   }
 
   User.findOne({ _id: userId }, { userIngredients: 1 }) // using a projection, returns an object containing only the array and its id)
+  // if userIngredients is not a field (undefined), the returned document will have it set to [] **because** of the projection (even if not stored in the db), without it, it would still be undefined
     .populate("userIngredients.ingredient")
     .then(response => {
       res.status(201).json(response.userIngredients);
