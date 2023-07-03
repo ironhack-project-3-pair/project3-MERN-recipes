@@ -12,7 +12,7 @@ router.put('/week-plan', (req, res, next) => {
     res.status(404).json({ message: 'User id is not valid' });
     return;
   }
-  console.log(req.body)
+
   const weekPlanRecipes = {
     dayMonday: [
       req.body.weekPlanRecipes["dayMonday"]?.[0],
@@ -25,7 +25,8 @@ router.put('/week-plan', (req, res, next) => {
     daySaturday: [],
     daySunday: [],
   }
-
+  
+  // rebuild the week plan from req.body
   const slotsPerDay = 2;
   for (const key in weekPlanRecipes) {
     if (weekPlanRecipes.hasOwnProperty(key)) {
