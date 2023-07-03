@@ -30,7 +30,7 @@ module.exports = (app) => {
       //   message: "Internal server error. Check the server console",
       // });
       // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
-      res.status(err.statusCode).json({
+      res.status(err.statusCode || 500).json({
         message: err.name + ": " + err.message,
         error: err,
       });
