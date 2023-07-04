@@ -64,10 +64,14 @@ router.post("/signup", (req, res, next) => {
       return User.create({ email, password: hashedPassword, name })
     })
     .then(createdUser => {
-      const createdUserId = createdUser._id;
-      return WeekPlan.create({user: createdUserId}) // declared default values in schema will be used
+      if (createdUser) { // if user not found, the previous promise in the chain will be settled/fulfilled with undefined
+        const createdUserId = createdUser._id;
+        return WeekPlan.create({user: createdUserId}) // declared default values in schema will be used
+      } // else no return (so defaults to undefined which will be again the fulfillment value for the returned promise)
     })
     .then((createdUser) => {
+      if (!createdUser) return; // idem
+
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
       const { email, name, _id } = createdUser;
