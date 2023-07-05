@@ -53,6 +53,12 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        // default: [{}, {}] 
+        // easier with this default in the end to always have the exact same layout for the document
+        // because without it, day's field value was empty array: dayMonday = [] before the first update
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
       dayTuesday: {
         type: [
@@ -74,6 +80,9 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
       dayWednesday: {
         type: [
@@ -95,6 +104,9 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
       dayThursday: {
         type: [
@@ -116,6 +128,9 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
       dayFriday: {
         type: [
@@ -137,6 +152,9 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
       daySaturday: {
         type: [
@@ -158,6 +176,9 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
       daySunday: {
         type: [
@@ -179,6 +200,9 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
+        default: function() {
+          return Array(slotsPerDay).fill({});
+        }
       },
     }
   },
