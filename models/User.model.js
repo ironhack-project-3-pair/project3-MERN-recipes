@@ -20,6 +20,7 @@ const userSchema = new Schema(
       required: [true, "Name is required."],
     },
 
+    // to do: migrate that to another model/schema...
     userIngredients: {
       type: [
         {
