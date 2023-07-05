@@ -123,7 +123,7 @@ router.post('/user-ingredients', (req, res, next) => {
     })
 });
 
-// PUT /api/useruingredients/id
+// PUT /api/user-ingredients/id
 router.put('/user-ingredients/:userIngredientId', (req, res, next) => {
   let { userId } = req.body; // may be used by admin
   if (!userId) userId = req.payload._id; // fallback to current user
