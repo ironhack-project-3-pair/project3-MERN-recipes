@@ -28,12 +28,6 @@ const recipeSchema = new Schema({
           type: Number,
           required: true,
           min: 1,
-          validate: {
-            validator: function (ingredientQtyInputValue) {
-              return ingredientQtyInputValue > 0;
-            },
-            message: 'Quantity is required. Please provide valid quantity',
-          },
         },
       },
     ],
