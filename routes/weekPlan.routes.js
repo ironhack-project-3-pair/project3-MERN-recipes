@@ -16,6 +16,7 @@ router.put('/week-plan', (req, res, next) => {
   // const weekPlanRecipes = req.body.weekPlanRecipes // just to test schema validators
   const weekPlanRecipes = {
     dayMonday: [
+      // before weekPlan v consumed
       // passing undefined element will results in null in db
       // req.body.weekPlanRecipes["dayMonday"]?.[0],
       // req.body.weekPlanRecipes["dayMonday"]?.[1]
@@ -27,20 +28,29 @@ router.put('/week-plan', (req, res, next) => {
     daySaturday: [],
     daySunday: [],
   }
-  
+
   // rebuild the week plan from req.body
   const slotsPerDay = 2;
   for (const key in weekPlanRecipes) {
     if (weekPlanRecipes.hasOwnProperty(key)) {
       for (let i = 0; i < slotsPerDay; i++) {
-        weekPlanRecipes[key][i] = req.body.weekPlanRecipes[key]?.[i]
+        weekPlanRecipes[key][i] = {}
+        weekPlanRecipes[key][i].recipe = req.body.weekPlanRecipes[key]?.[i]?.recipe
+        weekPlanRecipes[key][i].consumed = req.body.weekPlanRecipes[key]?.[i]?.consumed
       }
     }
   }
+  // before v consumed
   // this will set slots to undefined if no recipe passed 
   // (which will results in null values for corresponding fields of the updated document)
   // const arr = []; arr[1] = 1 // results in arr[0] = undefined
   // so no better option than having null field values
+  // with v consumed
+  // if dayMonday = [] (default)
+  // and if updating with week plan recipe {undefined, undefined} (ie not in body)
+  // then resulting field will be dayMonday = [ { _id = 123, consumed = false } ] because of default value declared in schema for that path
+  // then resulting field will be dayMonday = [ { _id = 123 } ] if not default
+  // so, all objects fields are initialized in db for slots
 
   WeekPlan.findOne({ user: userId })
     .then(weekPlan => {
@@ -77,7 +87,8 @@ router.put('/week-plan', (req, res, next) => {
         "daySaturday",
         "daySunday"
       ]
-      days.forEach(day => promiseBasedQuery.populate(`weekPlanRecipes.${day}`))
+      promiseBasedQuery.populate("weekPlanRecipes.dayMonday.recipe")
+      days.forEach(day => promiseBasedQuery.populate(`weekPlanRecipes.${day}.recipe`))
       return promiseBasedQuery
     })
     .then(response => {
@@ -112,7 +123,7 @@ router.get('/week-plan', (req, res, next) => {
     "daySaturday",
     "daySunday"
   ]
-  days.forEach(day => promiseBasedQuery.populate(`weekPlanRecipes.${day}`))
+  days.forEach(day => promiseBasedQuery.populate(`weekPlanRecipes.${day}.recipe`))
   promiseBasedQuery
     .then(weekPlan => {
       res.status(201).json(weekPlan)

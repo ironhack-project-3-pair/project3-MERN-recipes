@@ -13,27 +13,60 @@ const weekPlanSchema = new Schema(
       required: true
     },
     weekPlanRecipes: {
-      dayMonday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
-        required: true,
+      // dayMonday: {
+      //   type: [Schema.Types.ObjectId], 
+      //   ref: 'Recipe',
+      //   required: true,
 
-        validate: [{ // 2 syntax: array of 1 object or object; same behavior, validator runs once and receive the entire array in this case (whole array update, not using an $operator)
+      //   validate: [{ // 2 syntax: array of 1 object or object; same behavior, validator runs once and receive the entire array in this case (whole array update, not using an $operator)
+      //     validator: function (v) {
+      //       return v.length <= slotsPerDay;
+      //     },
+      //     message: 'only 2 recipe slots available per day in Week Plan',
+      //   }],
+      //   // validate: {
+      //   //   validator: function (v) {
+      //   //     return customValidator(v, slotsPerDay); // not much shorter...
+      //   //   },
+      //   //   message: 'only 2 recipe slots available per day in Week Plan',
+      //   // },
+      // },
+      // changed to add consumed state --> weekPlan v consumed
+
+      dayMonday: {
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
+        required: true,
+        validate: {
           validator: function (v) {
             return v.length <= slotsPerDay;
           },
           message: 'only 2 recipe slots available per day in Week Plan',
-        }],
-        // validate: {
-        //   validator: function (v) {
-        //     return customValidator(v, slotsPerDay); // not much shorter...
-        //   },
-        //   message: 'only 2 recipe slots available per day in Week Plan',
-        // },
+        },
       },
       dayTuesday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
         required: true,
         validate: {
           validator: function (v) {
@@ -43,8 +76,18 @@ const weekPlanSchema = new Schema(
         },
       },
       dayWednesday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
         required: true,
         validate: {
           validator: function (v) {
@@ -54,8 +97,18 @@ const weekPlanSchema = new Schema(
         },
       },
       dayThursday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
         required: true,
         validate: {
           validator: function (v) {
@@ -65,8 +118,18 @@ const weekPlanSchema = new Schema(
         },
       },
       dayFriday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
         required: true,
         validate: {
           validator: function (v) {
@@ -76,8 +139,18 @@ const weekPlanSchema = new Schema(
         },
       },
       daySaturday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
         required: true,
         validate: {
           validator: function (v) {
@@ -87,8 +160,18 @@ const weekPlanSchema = new Schema(
         },
       },
       daySunday: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Recipe',
+        type: [
+          {
+            recipe: {
+              type: Schema.Types.ObjectId, 
+              ref: 'Recipe',
+            },
+            consumed: {
+              type: Boolean,
+              default: false,
+            }
+          }
+        ],
         required: true,
         validate: {
           validator: function (v) {
@@ -96,7 +179,7 @@ const weekPlanSchema = new Schema(
           },
           message: 'only 2 recipe slots available per day in Week Plan',
         },
-      }
+      },
     }
   },
   {
