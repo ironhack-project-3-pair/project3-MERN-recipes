@@ -170,7 +170,10 @@ router.put('/user-ingredients', (req, res, next) => {
     return;
   }
 
-  const newUserIngredients = req.body.userIngredients;
+  const newUserIngredients = req.body.userIngredients; 
+  // array has to be nested because of the userId we also add,
+  // which could be added as a property to the array (object), 
+  // but its discarded by JSON.stringify() when passing the array for the request/response
 
   User.findOneAndUpdate(
     { _id: userId },
