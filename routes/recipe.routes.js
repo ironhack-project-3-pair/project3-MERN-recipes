@@ -5,6 +5,17 @@ const mongoose = require('mongoose');
 const Recipe = require('../models/Recipe.model');
 const Ingredient = require('../models/Ingredient.model');
 
+const fileUploader = require("../config/cloudinary.config");
+
+// POST "/api/upload"
+router.post("/upload", fileUploader.single("pictureBodyFormDataKey"), (req, res, next) => {
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  res.json({ picture: req.file.path });
+});
+
 // POST /api/recipes
 router.post('/recipes', (req, res, next) => {
   const newRecipe = {
@@ -12,6 +23,7 @@ router.post('/recipes', (req, res, next) => {
     instructions: req.body.instructions,
     durationInMin: req.body.durationInMin,
     recipeIngredients: req.body.recipeIngredients,
+    picture: req.body.picture,
   };
   Recipe.create(newRecipe)
     .then((response) => {
