@@ -90,6 +90,7 @@ router.put('/recipes/:recipeId', (req, res, next) => {
     instructions: req.body.instructions,
     durationInMin: req.body.durationInMin,
     recipeIngredients: req.body.recipeIngredients,
+    picture: req.body.picture,
   };
 
   Recipe.findByIdAndUpdate(req.params.recipeId, newRecipe, { new: true })
